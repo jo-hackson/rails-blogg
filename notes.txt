@@ -1,0 +1,227 @@
+:references keyword creates new column in db with provided model name appended with an _id
+t.references creates an integer column called article_id, index, and a foreign key constraint that points to articles table
+
+
+
+ActionCable
+  - integrates WebSockets with Rails app
+  - offers both client-side JS framework and server-side Ruby framework
+
+Puma
+  - webserver
+  - competes with Unicorn
+  - process concurrent requests
+  - comes bundled with Rails
+
+
+
+app
+  - core directory
+  - aplication-specific code
+  - MVC
+
+app/assets
+  - home for static files, which is file content sent to client (browser) without server intervention (vs dynamic which is parsed by serve which then renders a new set of data based on dynamic file template)
+  - front-end grouped based on type
+
+app/assets/images
+  - all images required
+  - available in views with helpers like image_tag("img_name.png")
+
+app/assets/javascripts
+  - javascript files
+  - convention: for books_controller.rb, js file would be books.js
+
+app/assets/javascripts/application.js
+  - entire app's js requirements
+  - asset pipeline: for compiling and serving up assets, which means the application.js is the file where you reference the application specific JS files which are unified and minified before sending it to the views (compressed).
+
+app/assets/stylesheets
+  - css files
+  - same naming conventions as JS assets
+
+app/assets/stylesheets/application.css
+  - self ex
+
+app/controllers
+  - all controller files
+  - naming convention: pluralized model name + "_controller"
+  - controller for Book model is books_controller.rb (snake case)
+  - controller class is BooksController (camel case)
+  - rails generate controller controller_name action1 action2 (script)
+
+app/controllers/application_controller.rb
+  - main controllers from which all other controllers inherit
+  - methods on ApplicationController are also available on other controllers as well
+  - inherits from ActionController::Base
+
+app/controllers/concerns
+  - modules that can be used across controllers
+  - naming convention is module_name.rb
+
+app/helpers
+  - helper functions for view
+  - naming convention controller_name_helper.rb
+
+app/helpers/application_helper.rb
+  - most popular root helper
+  - functions available in all the helpers and views
+
+app/mailers
+  - contains mail (email)
+  - similiar to controllers and will have their view files in app/views/mailer_name/
+  - rails generate mailer MailerName
+  - first time you generate a mailer, application_mailer.rb is auto created
+  - inherit from ActionMailer::Base sets default from address as well as the layout for your mailer views
+  - subsequent mailers inherit from ApplicationMailer
+  - naming convention modelname_mailer.rb
+
+app/models
+  - all model files
+  - ORM to db tables
+  - naming convention modelname.rb, singular form of the underlying table that reps model in db
+
+app/models/concerts
+  - contain methods used in multiple model files
+
+app/views
+  - combo of HTML and erb
+  - organized based on controller to which they correspond
+  - view file for each controller action
+  - BooksController#index action have corresponding view as app/views/books/index.html.erb
+
+app/views/layout
+  - layout for all view files, which they inherit
+  - available across all view files
+  - partial views accessible across controllers
+  - can create layouts scoped to parts of app achieved by creating layout file named after controller, ie AdminController views, layout file named admin.html.erb, which will then act as layout for admin views and any controller that inherits from AdminController
+
+bin
+  - binstubs which are wrappers to run gem executables scoped to your application
+  - can be used in place of bundle exec <command>
+  - default are bundle, rails, rake, setup, and spring
+  - any binstubs can be exec by bin/<executable>
+  - purpose is to prepare environment before dispatching call to the original executable
+  - contains Rails scripts that starts app and used to setup, update, deploy, or run app
+
+config
+  - app's config files
+  - db connection, app behavior altered by files in this dir
+
+config/application.rb
+  - main config for app, ie timezone, language
+  - configs specified here is for all envir (dev, testing, prod)
+  - env specific configs will go into other files
+
+config/boot.rb
+  - "boots" up rails app
+  - verifies that there is a Gemfile present and will store the path to this file in envir var called BUNDLE_GEMFILE
+  - requires 'bundler/setup' which fetches and builds gems mentioned in Gemfile using Bundler
+
+config/database.yml
+  - holds all db config app needs
+  - dif configs can be set for dif envir
+
+config/environment.rb
+  - requires application.rb to init Rails app
+
+config/routes.rb
+  - where all routes are defined
+
+config/secrets.yml
+  - store app secrets
+  - available throughout app with Rails.application.secrets.<secret_name>
+
+config/environments
+  - envir-spec config files for dev, test, and prod
+  - config in application.rb available in all environments
+  - can create unique environments by adding settings to the environment named files inside this dir
+  - default envir files available are development.rb, production.rb, test.rb
+
+config/initializers
+  - list of files that need to be run during Rails initialization process
+  - any *.rb file created here will run automatically
+  - constants declared here will be availble througout app
+  - triggered from call in config/environment.rb to Rails.application.initialize!
+
+config/initializers/assets.rb
+  - contains config for asset pipeline
+  - 1 default config already defined, Rails.application.config.assets.version, which is version of assets bundle
+  - can also specify config such as adding additional assets path or other items to precompile
+
+config/initializers/backtrace_silencers.rb
+  - backtrace_silencers and filters
+
+config/initializers/cookie_serializer.rb
+  - not a lot of config happening here
+  - contains specs for app's cookie serialization
+
+config/initializers/filter_parameter_logging.rb
+  - add parameters here that might contain sensitive information that you do not want to display in logs
+  - by default "password" parameter will be filtered
+
+config/initializers/inflections.rb
+  - add/override inflections (singularizations and pluralizations) for any language
+
+config/initializers/mime_type.rb
+  - add MIME (multi-purpose internet mail extensions) configs for app to handle different types of files
+
+config/initializers/session_store.rb
+  - contains underlying session store in app to store sessions
+  - default is :cookie_store, meaning sessions are stored in browser cookies
+
+config/initializers/wrap_parameters.rb
+  - contains settings for wrapping parameters
+  - by default, all parameters are wrapped into a nested hash so available with or without root
+  - can override this or write custom settings here
+
+config/locales
+  - list of YAML files for each language that holds key and values to translate bits of app
+
+db
+  - db related files
+  - config, schema, migration files
+
+lib
+  - app specific libraries
+  - reusable generic code extracted from app
+  - think of as app specific gem
+  - extended modules for app
+
+lib/assets
+  - holds all library assets
+  - scripts, stylesheets, images that are not app specific
+
+lib/tasks
+  - app's Rake tasks and other tasks
+  - Rake tasks mentioned here are required by the app's Rakefile
+
+public
+  - common files for web apps
+  - default, HTML templates for HTML errors
+  - files in this dir available in https://appname.com/filename directly
+
+tmp
+  - temp dir for app to hold files like caches
+  - do not worry about it, fully managed by Rails
+  - ie cache and pid files
+
+vendor/assets
+  - vendor files, like javascript libraries, css files
+  - files added here become part of asset pipeline automatically
+
+
+Gemfile
+  - contains all dependencies required for app to run
+
+
+
+
+
+
+
+
+
+
+
+
