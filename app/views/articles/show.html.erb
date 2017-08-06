@@ -8,31 +8,21 @@
   <%= @article.text %>
 </p>
 
+
+<!-- what, how does this work? -->
+<!-- why is _comments.html.erb not in app/views/application? -->
+<!-- why is it not render "comment" -->
+<!-- render method iterates over @article.comments collection and assigns each comment to a local variable named the same as the partial -->
 <h2>Comments</h2>
-  <% @article.comments.each do |comment| %>
-    <p>
-      <strong>Commenter:</strong>
-      <%= comment.commenter %>
-    </p>
-  <% end %>
+<%= render @article.comments %>
 
-
+<!-- refactored so following two comments do not make sense, need to refer to Railsguide -->
 <!-- pass array to build nested route -->
 <!-- /articles/1/comments -->
 <h2>Add a comment:</h2>
-  <%= form_for([@article, @article.comments.build]) do |f| %>
-    <p>
-      <%= f.label :commenter %><br>
-      <%= f.text_field :commenter %>
-    </p>
-    <p>
-      <%= f.label :body %><br>
-      <%= f.text_area :body %>
-    </p>
-    <p>
-      <%= f.submit %>
-    </p>
-  <% end %>
+  <!-- where is the best place to put this? -->
+  <%= render 'application/form' %>
+
 
 <%= link_to 'edit', edit_article_path(@article) %>
 <%= link_to 'back', articles_path %>

@@ -1,9 +1,19 @@
 class CommentsController < ApplicationController
 
+  http_basic_authenticate_with name: "dhh", password: "secret", only: :destroy
+
   # each request for comment has to keep track of which article the comment is attached to
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.create(comment_params)
+    redirect_to article_path(@article)
+  end
+
+  # DELETE /articles/:article_id/comments/:id
+  def destroy
+    @article = Article.find(params[:article_id])
+    @comment = @article.comments.find(params[:id])
+    @comment.destroy
     redirect_to article_path(@article)
   end
 
